@@ -14,4 +14,14 @@ public class Matrices {
         }
         return C;
     }
+
+    public static int[][] transposeMatrix(int[][] A) {
+        int[][] AT = new int[2][2];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                AT[i][j] = A[j][i];
+            }
+        }
+        return AT;
+    }
 }
