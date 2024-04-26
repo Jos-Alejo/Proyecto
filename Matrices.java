@@ -1,6 +1,27 @@
+import java.util.Scanner;
+
 public class Matrices {
     public static void main(String[] args) {
+        System.out.println("Con las 3 matrices que ingresaras a continuacion se efectuara la ecuacion siguiente:\n D=(A*B)+[(B^T)*C]-A^-1\n IMPORTANTE: Los valores decimales se redondearan hacia abajo. ");
+        int[][] A = inputMatrix("A");
+        int[][] B = inputMatrix("B");
+        int[][] C = inputMatrix("C");
 
+        int[][] result = new int[2][2];
+
+        result = multiplyMatrices(A, B);
+        
+        int[][] BT = transposeMatrix(B);
+
+        int[][] temp = multiplyMatrices(BT, C);
+
+        int[][] AInverse = inverseMatrix(A);
+        result = addMatrices(result, temp);
+        result = subtractMatrices(result, AInverse);
+
+        System.out.println("El resultado es:");
+        printMatrix(result);
+    
     }
 
     public static int[][] multiplyMatrices(int[][] A, int[][] B) {
@@ -15,18 +36,17 @@ public class Matrices {
         return C;
     }
 
-    public static int[][] subtractMatrices(int[][] A, int[][] B) {
-        int[][] C = new int[2][2];
+    public static int[][] transposeMatrix(int[][] A) {
+        int[][] AT = new int[2][2];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                C[i][j] = A[i][j] - B[i][j];
+                AT[i][j] = A[j][i];
             }
         }
-        return C;
+        return AT;
     }
 
-
-public static int[][] addMatrices(int[][] A, int[][] B) {
+    public static int[][] addMatrices(int[][] A, int[][] B) {
         int[][] C = new int[2][2];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -36,14 +56,14 @@ public static int[][] addMatrices(int[][] A, int[][] B) {
         return C;
     }
 
-    public static int[][] transposeMatrix(int[][] A) {
-        int[][] AT = new int[2][2];
+    public static int[][] subtractMatrices(int[][] A, int[][] B) {
+        int[][] C = new int[2][2];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                AT[i][j] = A[j][i];
+                C[i][j] = A[i][j] - B[i][j];
             }
         }
-        return AT;
+        return C;
     }
 
     public static int[][] inverseMatrix(int[][] A) {
@@ -61,8 +81,34 @@ public static int[][] addMatrices(int[][] A, int[][] B) {
             System.out.println("El determinante de la matriz A es 0, por lo que no es posible realizar la operación.");
             System.exit(0);   
         }
+
+
         
         return inverseA;
         
+    }
+
+    public static void printMatrix(int[][] matrix) {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static int[][] inputMatrix(String name) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce los valores de la matriz " + name + ":");
+        int[][] matrix = new int[2][2];
+        
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                System.out.print(name + "[" + i + "][" + j + "]: ");
+                matrix[i][j] = scanner.nextInt();
+            }
+        }
+        
+        return matrix;
     }
 }
